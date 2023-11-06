@@ -4,7 +4,9 @@ class Home extends Controller
 {
   public function index()
   {
-    echo "Home Controller";
-    $this->view('home');
+    $model = new Model;
+    $data = ['age' => 23];
+    $result = $model->first($data);
+    show($result);
   }
 }
