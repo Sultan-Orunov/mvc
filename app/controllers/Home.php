@@ -4,9 +4,9 @@ class Home extends Controller
 {
   public function index()
   {
-    $model = new Model;
-    $data = [];
-    $result = $model->update(['name' => 'Mary', 'age' => 30], 2);
-    dd($result);
+    $user = new User;
+    // $data = ['name' => 'Katy', 'lastname' => 'Tatum', 'age' => 30];
+    $result = $user->findAll();
+    show($result);
   }
 }

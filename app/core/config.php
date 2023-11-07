@@ -26,3 +26,6 @@ if ($_SERVER['SERVER_NAME'] == 'localhost') {
   define('ROOT', 'http://website.com');
   define('WWW', ROOT . '/public');
 }
+
+//Если DEBUG true то ошибки отабражаются
+define('DEBUG', true);

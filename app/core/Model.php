@@ -6,6 +6,14 @@ trait Model
 
   protected $limit = 10;
   protected $offset = 0;
+  protected $orderType = 'desc';
+  protected $orderColumn = 'id';
+
+  public function findAll()
+  {
+    $query = "select * from {$this->table} order by {$this->orderColumn} {$this->orderType} limit {$this->limit} offset {$this->offset}";
+    return $this->query($query);
+  }
 
   public function where($data, $dataNot = [])
   {
@@ -22,15 +30,14 @@ trait Model
     }
 
     $query = trim($query, ' && ');
-    $query .= " limit {$this->limit} offset {$this->offset}";
+    $query .= " order by {$this->orderColumn} {$this->orderType} limit {$this->limit} offset {$this->offset}";
 
     $data = array_merge($data, $dataNot);
     $result = $this->query($query, $data);
     return $result;
   }
 
-  public function
-  first($data, $dataNot = [])
+  public function first($data, $dataNot = [])
   {
     $keys = array_keys($data);
     $keysNot = array_keys($dataNot);
@@ -54,13 +61,31 @@ trait Model
 
   public function insert($data)
   {
+    //Удаляем лищние данные
+    if (!empty($this->fillable)) {
+      foreach ($data as $key) {
+        if (!in_array($key, $this->fillable)) {
+          unset($data[$key]);
+        }
+      }
+    }
+
     $keys = array_keys($data);
     $query = "insert into {$this->table} (" . implode(',', $keys) . ") values (:" . implode(',:', $keys) . ")";
-    $this->query($query, $data);
+    return $this->query($query, $data);
   }
 
   public function update($data, $id, $idColumn = 'id')
   {
+    //Удаляем лищние данные
+    if (!empty($this->fillable)) {
+      foreach ($data as $key) {
+        if (!in_array($key, $this->fillable)) {
+          unset($data[$key]);
+        }
+      }
+    }
+
     $keys = array_keys($data);
     $query = "update {$this->table} set ";
 

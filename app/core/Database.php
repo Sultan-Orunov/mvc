@@ -21,7 +21,8 @@ trait Database
       if (is_array($result) && count($result)) {
         return $result;
       }
+    } else {
+      return "Query is Failed";
     }
-    return false;
   }
 }
