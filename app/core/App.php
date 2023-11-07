@@ -2,13 +2,13 @@
 
 class App
 {
-  private $controller;
+  private $controller = 'home';
   private $method = 'index';
 
   private function splitURL()
   {
     $url = $_GET['url'] ? $_GET['url'] : 'home';
-    $url = explode('/', $url);
+    $url = explode('/', trim($url, '/'));
     return $url;
   }
 
@@ -16,17 +16,28 @@ class App
   {
     $url = $this->splitURL();
 
+    //select controller
     $fileName = '../app/controllers/' . ucfirst($url[0]) . '.php';
     if (file_exists($fileName)) {
       require $fileName;
       $this->controller = ucfirst($url[0]);
+      unset($url[0]);
     } else {
-      require '../app/views/errors/_404.php';
+      require '../app/controllers/_404.php';
       $this->controller = '_404';
     }
 
 
     $controller = new $this->controller;
-    call_user_func_array([$controller, $this->method], []);
+
+    //select method
+    if (!empty($url[1])) {
+      if (method_exists($controller, $url[1])) {
+        $this->method = $url[1];
+        unset($url[1]);
+      }
+    }
+
+    call_user_func_array([$controller, $this->method], $url);
   }
 }

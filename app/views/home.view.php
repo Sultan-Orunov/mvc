@@ -9,10 +9,6 @@
 
 <body>
   <h1 style="text-align: center;">Welcome Home Page</h1>
-  <div style="text-align: center;">
-
-    <img src="<?= WWW ?>/assets/images/image.jpg" alt="car">
-  </div>
 </body>
 
 </html>
