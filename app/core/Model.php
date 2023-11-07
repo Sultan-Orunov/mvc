@@ -1,10 +1,9 @@
 <?php
 
-class Model
+trait Model
 {
   use Database;
 
-  protected $table = 'users';
   protected $limit = 10;
   protected $offset = 0;
 
@@ -53,14 +52,42 @@ class Model
     return $result[0];
   }
 
-  public function insert()
+  public function insert($data)
   {
+    $keys = array_keys($data);
+    $query = "insert into {$this->table} (" . implode(',', $keys) . ") values (:" . implode(',:', $keys) . ")";
+    $this->query($query, $data);
   }
 
-  public function update()
+  public function update($data, $id, $idColumn = 'id')
   {
+    $keys = array_keys($data);
+    $query = "update {$this->table} set ";
+
+    foreach ($keys as $key) {
+      $query .= "{$key} = :{$key}, ";
+    }
+
+    $query = trim($query, ', ');
+    $query .= " where {$idColumn} = :{$idColumn}";
+    $data[$idColumn] = $id;
+    try {
+      $this->query($query, $data);
+      return 'Success';
+    } catch (PDOException $e) {
+      return 'Update is Failed: ' . $e->getMessage();
+    }
   }
   public function delete($id, $idColumn = 'id')
   {
+    $data[$idColumn] = $id;
+    $query = "delete from {$this->table} where {$idColumn} = :{$idColumn}";
+
+    try {
+      $this->query($query, $data);
+      return "Success";
+    } catch (PDOException $e) {
+      return "Deleting Error: " . $e->getMessage();
+    }
   }
 }
