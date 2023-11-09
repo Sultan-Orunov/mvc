@@ -76,3 +76,15 @@ function get_image(mixed $file = '', string $type = 'post'): string
     return ROOT . "/assets/images/no_image.jpg";
   }
 }
+
+/** возврат ссылок пагинации */
+function get_pagination_vars(): array
+{
+  $vars = [];
+  $vars['page']     = $_GET['page'] ?? 1;
+  $vars['page']     = (int)$vars['page'];
+  $vars['prev_page']   = $vars['page'] <= 1 ? 1 : $vars['page'] - 1;
+  $vars['next_page']   = $vars['page'] + 1;
+
+  return $vars;
+}
