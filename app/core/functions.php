@@ -88,3 +88,24 @@ function get_pagination_vars(): array
 
   return $vars;
 }
+
+/**сохраняет или отображает сообщения пользователю */
+function message(string $msg = null, bool $clear = false)
+{
+  $ses   = new Core\Session();
+
+  if (!empty($msg)) {
+    $ses->set('message', $msg);
+  } else
+  if (!empty($ses->get('message'))) {
+
+    $msg = $ses->get('message');
+
+    if ($clear) {
+      $ses->pop('message');
+    }
+    return $msg;
+  }
+
+  return false;
+}
