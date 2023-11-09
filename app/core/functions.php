@@ -60,3 +60,19 @@ function redirect($path)
   header("Location: " . ROOT . "/" . $path);
   die();
 }
+
+/**Загрузи изображение, если не существует загрузи placeholder */
+function get_image(mixed $file = '', string $type = 'post'): string
+{
+
+  $file = $file ?? '';
+  if (file_exists($file)) {
+    return ROOT . "/" . $file;
+  }
+
+  if ($type == 'user') {
+    return ROOT . "/assets/images/user.webp";
+  } else {
+    return ROOT . "/assets/images/no_image.jpg";
+  }
+}
