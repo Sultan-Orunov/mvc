@@ -110,6 +110,36 @@ function message(string $msg = null, bool $clear = false)
   return false;
 }
 
+/** возвращает переменную URL*/
+function URL($key): mixed
+{
+  $URL = $_GET['url'] ?? 'home';
+  $URL = explode("/", trim($URL, "/"));
+
+  switch ($key) {
+    case 'page':
+    case 0:
+      return $URL[0] ?? null;
+      break;
+    case 'section':
+    case 'slug':
+    case 1:
+      return $URL[1] ?? null;
+      break;
+    case 'action':
+    case 2:
+      return $URL[2] ?? null;
+      break;
+    case 'id':
+    case 3:
+      return $URL[3] ?? null;
+      break;
+    default:
+      return null;
+      break;
+  }
+}
+
 /** отображает введенные данные после перезагрузки страницы */
 function old_checked(string $key, string $value, string $default = ""): string
 {
