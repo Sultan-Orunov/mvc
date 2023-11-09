@@ -1,6 +1,9 @@
 <?php
 
 /** check which php extensions are required */
+
+
+
 check_extensions();
 function check_extensions()
 {
@@ -92,7 +95,7 @@ function get_pagination_vars(): array
 /**сохраняет или отображает сообщения пользователю */
 function message(string $msg = null, bool $clear = false)
 {
-  $ses   = new Core\Session();
+  $ses   = new Core\Session;
 
   if (!empty($msg)) {
     $ses->set('message', $msg);
